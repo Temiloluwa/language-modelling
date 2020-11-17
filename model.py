@@ -21,7 +21,7 @@ def many_to_one_model(vocab_size,
     return model
 
 
-def generate_words(start_string, num_words, temperature, model, tokenizer, sequence_len, padding_value=1):
+def generate_words(start_string, num_words, temperature, model, tokenizer, sequence_len, padding_value=0):
     model.reset_states()
     punctuation_to_keep = r"[!:.;,?\t\n]"
     start_string = re.sub(punctuation_to_keep, lambda x: " " + x.group(0) + " ", start_string)
