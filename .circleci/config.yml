@@ -1,0 +1,29 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  build:
+    working_directory: ~/
+    docker:
+    - image: circleci/python:3.7.3
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-{{ .Branch }}-{{ checksum "model/requirements.txt"}}
+      - run:
+          name: Install dependencies
+          command: |
+            python -m venv language-model-env
+            source language-model-env/bin/activate
+            pip install -r model/requirements.txt
+      - save_cache:
+          key: dependency-{{ .Branch }}-{{ checksum "model/requirements.txt"}}
+          paths:
+            - "language-model-env"
+
+workflows:
+  main:
+    jobs:
+      - build
