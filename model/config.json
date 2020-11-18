@@ -1,0 +1,15 @@
+
+{
+    "mode":"train",
+    "experiment":1,
+    "hyperparameters":{
+        "sequence_length":60,
+        "batch_size":32,
+        "shuffle_buffer_size":10000,
+        "embedding_dims":80,
+        "lstm_dims":80,
+        "epochs":200,
+        "learning_rate":1e-3,
+        "vocab_size":600
+    } 
+}
