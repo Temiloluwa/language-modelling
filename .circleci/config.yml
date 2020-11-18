@@ -5,7 +5,7 @@ orbs:
 
 jobs:
   build:
-    working_directory: ~/
+    working_directory: ~/language_modelling/language_modelling/
     docker:
     - image: circleci/python:3.7.3
     steps:

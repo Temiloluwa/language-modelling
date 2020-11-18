@@ -25,10 +25,10 @@ class SavingCallback(Callback):
             if len(saved_epochs) > 2:
                 epochs_to_delete = saved_epochs[:-2]
                 for epoch in epochs_to_delete:
-                    fn = f"ckpt_{epoch}.data-00000-of-00001"
-                    os.remove(os.path.join(ckpt_path, fn))
-                    fn = f"ckpt_{epoch}.index"
-                    os.remove(os.path.join(ckpt_path, fn))
+                    for fn in os.listdir(ckpt_path):
+                        if not os.path.isdir(fn):
+                            if f"ckpt_{epoch}" in fn:
+                                os.remove(os.path.join(ckpt_path, fn))
 
 
 def save_tokenizer(tokenizer, model_type="many_to_one"):
