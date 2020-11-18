@@ -14,7 +14,6 @@ def many_to_one_model(vocab_size,
         Embedding(vocab_size, embedding_dims, input_length=sequence_len),
         LSTM(lstm_dims, return_sequences=True),
         LSTM(lstm_dims),
-        Dense(dense_dims, activation='relu'),
         Dense(dense_dims, activation='softmax')
     ])
 
