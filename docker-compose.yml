@@ -1,0 +1,13 @@
+version: '3'
+services:
+    model:
+        build:./model
+        ports:
+          - 8000:8080
+    web:
+        build:./web
+        ports:
+          - 3001:3000
+
+        
+       
