@@ -7,23 +7,26 @@
   "author": "Temiloluwa Adeoti",
   "license": "MIT",
   "scripts": {
+    "start": "node server/server.js",
     "serve": "webpack-dev-server",
-    "build": "webpack --watch"
+    "build-dev": "webpack --watch",
+    "build-prod": "webpack -p --env production"
   },
   "devDependencies": {
+    "webpack-dev-server": "3.9.0"
+  },
+  "dependencies": {
     "@babel/core": "^7.12.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.5",
     "babel-loader": "^8.2.1",
-    "webpack": "4.41.3",
-    "webpack-cli": "3.3.10",
-    "webpack-dev-server": "3.9.0"
-  },
-  "dependencies": {
+    "express": "^4.17.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "webpack": "4.41.3",
+    "webpack-cli": "3.3.10"
   }
 }

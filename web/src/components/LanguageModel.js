@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from './Header';
+import Body from './Body';
 
 export default class LanguageModel extends React.Component{
     constructor(props){
@@ -14,6 +15,7 @@ export default class LanguageModel extends React.Component{
         return (
             <div>
                 <Header {...modelParams} />
+                <Body />
             </div>
         );
     }

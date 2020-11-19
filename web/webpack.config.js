@@ -1,6 +1,6 @@
 const path = require('path');
 
-module.exports = {
+module.exports = (env, argv) =>({
     entry: './src/app.js',
     output: {
         path: path.join(__dirname, 'public'),
@@ -13,10 +13,10 @@ module.exports = {
             loader: 'babel-loader',
         }]
     },
-    devtool: 'eval-cheap-module-source-map',
+    devtool: env === 'production' ? 'source-map':'eval-cheap-module-source-map',
     devServer: {
         port:8081,
         contentBase: path.join(__dirname, 'public'),
         historyApiFallback: true
     }
-};
+});

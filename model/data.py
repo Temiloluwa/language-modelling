@@ -1,7 +1,7 @@
 import os
 import re
 import numpy as np
-from utils import read_text_file
+from model.utils import read_text_file
 from tensorflow.keras.preprocessing.text import Tokenizer
 
 
