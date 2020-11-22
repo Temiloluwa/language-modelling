@@ -5,4 +5,4 @@ RUN yarn install --production=true
 COPY . .
 EXPOSE 3000
 RUN yarn run build-prod
-CMD ["node", "server/server.js"]
+CMD ["yarn", "run", "start"]

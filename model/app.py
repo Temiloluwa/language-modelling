@@ -1,16 +1,16 @@
 import os
-import tensorflow as tf
+#import tensorflow as tf
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_restful import Api, Resource, reqparse
 from utils import load_tokenizer, load_config
 from model import many_to_one_model, generate_words
-from waitress import serve
 
 app = Flask(__name__)
 api = Api(app)
 cors = CORS(app, resources={r"/generatewords": {"origins": "*"}})
 
+"""
 ckpt_dir = os.path.join(os.path.dirname(__file__), 'checkpoints', 'exp_1')
 config = load_config(os.path.join(ckpt_dir, 'config.json'))
 hyp  = config.hyperparameters
@@ -24,7 +24,7 @@ tokenizer = load_tokenizer(config)
 model = many_to_one_model(VOCAB_SIZE, SEQ_LEN, EMBED_DIMS, LSTM_DIMS, dense_dims=VOCAB_SIZE)
 model.load_weights(tf.train.latest_checkpoint(os.path.join(ckpt_dir)))
 model.build(tf.constant(1, None, SEQ_LEN))
-
+"""
 
 parser = reqparse.RequestParser()
 parser.add_argument('start-string', type=str)
@@ -32,9 +32,10 @@ parser.add_argument('start-string', type=str)
 class GenerateWords(Resource):
     def post(self):
         args = parser.parse_args()
-        response_text = self.generate_words(args.get("start-string"))
-        response = {"status":200, "msg": response_text}
-        return jsonify(response)
+        #response_text = self.generate_words(args.get("start-string"))
+        #response = jsonify({"status":200, "msg": response_text})
+        response = jsonify({'hello': 'world'})
+        return response
 
 
     def generate_words(self, start_string):
@@ -50,5 +51,5 @@ class GenerateWords(Resource):
 
 api.add_resource(GenerateWords, '/generatewords')
 if __name__ == "__main__":
-    serve(app, host='0.0.0.0', port=8080)
+    app.run()
    

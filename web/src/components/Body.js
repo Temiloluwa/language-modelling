@@ -18,7 +18,7 @@ export default class LanguageModel extends React.Component{
 
     onSendRequest(e){
         e.preventDefault();
-        fetch("http://0.0.0.0:8000/generatewords", {
+        fetch("http://127.0.0.1:80/generatewords", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

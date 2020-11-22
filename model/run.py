@@ -5,6 +5,7 @@ from tensorflow.keras.losses import sparse_categorical_crossentropy
 from data import many_to_one_data
 from model import many_to_one_model, generate_words
 from utils import SavingCallback, save_tokenizer, load_tokenizer, load_config, cache_checkpoints
+from app import app
 
 config = load_config()
 MODE = config.mode
@@ -31,31 +32,34 @@ ckpt_callback = tf.keras.callbacks.ModelCheckpoint(
 def loss(labels, logits):
     return sparse_categorical_crossentropy(labels, logits, from_logits=True)
 
+if __name__ == "__main__":
+    if MODE == "train":
+        dataset, tokenizer = many_to_one_data(DATA_PATH, SEQ_LEN, VOCAB_SIZE)  
+        dataset = tf.data.Dataset.from_tensor_slices(dataset).shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE)
+        save_tokenizer(tokenizer)
+        dataset = dataset.map(lambda x: (x[:,:-1], x[:,-1])) # last word is the target
+        model = many_to_one_model(VOCAB_SIZE, SEQ_LEN, EMBED_DIMS, LSTM_DIMS, dense_dims=VOCAB_SIZE)
+        optimizer = tf.keras.optimizers.Adam(lr=LEARNING_RATE)
+        model.compile(optimizer=optimizer, loss=loss)
+        history = model.fit(dataset, epochs=EPOCHS, callbacks=[ckpt_callback, SavingCallback()])
+        cache_checkpoints(config)
+    elif MODE == "inference":
+        tokenizer = load_tokenizer(config)
+        start_string = input("Enter the Start String?")
+        model = many_to_one_model(VOCAB_SIZE, SEQ_LEN, EMBED_DIMS, LSTM_DIMS, dense_dims=VOCAB_SIZE)
+        model.load_weights(tf.train.latest_checkpoint(os.path.join(ckpt_dir, f'exp_{config.experiment}')))
+        model.build(tf.constant(1, None, SEQ_LEN))
+        generated_words = generate_words(start_string, 
+                                        num_words=500, 
+                                        temperature=0.9, 
+                                        model=model, 
+                                        tokenizer=tokenizer, 
+                                        sequence_len=SEQ_LEN, 
+                                        padding_value=0)
+        print(generated_words)
+    else:
+        app.run()
 
-if MODE == "train":
-    dataset, tokenizer = many_to_one_data(DATA_PATH, SEQ_LEN, VOCAB_SIZE)  
-    dataset = tf.data.Dataset.from_tensor_slices(dataset).shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE)
-    save_tokenizer(tokenizer)
-    dataset = dataset.map(lambda x: (x[:,:-1], x[:,-1])) # last word is the target
-    model = many_to_one_model(VOCAB_SIZE, SEQ_LEN, EMBED_DIMS, LSTM_DIMS, dense_dims=VOCAB_SIZE)
-    optimizer = tf.keras.optimizers.Adam(lr=LEARNING_RATE)
-    model.compile(optimizer=optimizer, loss=loss)
-    history = model.fit(dataset, epochs=EPOCHS, callbacks=[ckpt_callback, SavingCallback()])
-    cache_checkpoints(config)
-else:
-    tokenizer = load_tokenizer(config)
-    start_string = input("Enter the Start String?")
-    model = many_to_one_model(VOCAB_SIZE, SEQ_LEN, EMBED_DIMS, LSTM_DIMS, dense_dims=VOCAB_SIZE)
-    model.load_weights(tf.train.latest_checkpoint(os.path.join(ckpt_dir, f'exp_{config.experiment}')))
-    model.build(tf.constant(1, None, SEQ_LEN))
-    generated_words = generate_words(start_string, 
-                                     num_words=500, 
-                                     temperature=0.9, 
-                                     model=model, 
-                                     tokenizer=tokenizer, 
-                                     sequence_len=SEQ_LEN, 
-                                     padding_value=0)
-    print(generated_words)
 
     
 

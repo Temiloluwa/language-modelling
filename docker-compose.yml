@@ -1,13 +1,21 @@
 version: '3'
 services:
-    model:
-        build:./model
-        ports:
-          - 8000:8080
-    web:
-        build:./web
-        ports:
-          - 3001:3000
+  model:
+    build: ./model
+    container_name: model
+    restart: always
+    environment: 
+      - APP_NAME=model
+    expose: 
+      - 8080
+  web:
+    build: ./web
+    ports: 
+      - "3000:3000"
 
-        
-       
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    expose: 
+      - 80
