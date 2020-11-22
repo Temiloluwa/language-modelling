@@ -4,7 +4,8 @@ import pickle
 from tensorflow.keras.losses import sparse_categorical_crossentropy
 from data import many_to_one_data
 from model import many_to_one_model, generate_words
-from utils import SavingCallback, save_tokenizer, load_tokenizer, load_config, cache_checkpoints
+from utils import SavingCallback, save_tokenizer, load_tokenizer, load_config, \
+                cache_checkpoints, load_model
 from app import app
 
 config = load_config()
@@ -44,11 +45,8 @@ if __name__ == "__main__":
         history = model.fit(dataset, epochs=EPOCHS, callbacks=[ckpt_callback, SavingCallback()])
         cache_checkpoints(config)
     elif MODE == "inference":
-        tokenizer = load_tokenizer(config)
         start_string = input("Enter the Start String?")
-        model = many_to_one_model(VOCAB_SIZE, SEQ_LEN, EMBED_DIMS, LSTM_DIMS, dense_dims=VOCAB_SIZE)
-        model.load_weights(tf.train.latest_checkpoint(os.path.join(ckpt_dir, f'exp_{config.experiment}')))
-        model.build(tf.constant(1, None, SEQ_LEN))
+        model = load_model(start_string, os.path.join(ckpt_dir, f'exp_{config.experiment}'))
         generated_words = generate_words(start_string, 
                                         num_words=500, 
                                         temperature=0.9, 
@@ -58,7 +56,7 @@ if __name__ == "__main__":
                                         padding_value=0)
         print(generated_words)
     else:
-        app.run()
+        app.run(host='0.0.0.0')
 
 
     
