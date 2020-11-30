@@ -10,8 +10,8 @@ services:
       - 8080
   web:
     build: ./web
-    ports: 
-      - "3000:3000"
+    expose: 
+      - 3000
 
   nginx:
     build: ./nginx
