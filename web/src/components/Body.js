@@ -18,10 +18,10 @@ export default class LanguageModel extends React.Component{
 
     onSendRequest(e){
         e.preventDefault();
-        fetch("http://0.0.0.0:80/app/", {
+        fetch("http://localhost:80/app", {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
          },
         body: JSON.stringify({"start-string": this.state.startString}),
         })

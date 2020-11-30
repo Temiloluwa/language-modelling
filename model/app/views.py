@@ -29,9 +29,11 @@ parser.add_argument('start-string', type=str)
 class GenerateWords(Resource):
     def post(self):
         args = parser.parse_args()
+        app_name = os.getenv("APP_NAME")
+        response_text = f"Hello world {app_name} is running"
         #response_text = self.generate_words(args.get("start-string"))
-        #response = jsonify({"status":200, "msg": response_text})
-        response = jsonify({'hello': 'world'})
+        response = jsonify({"status":200, "msg": response_text})
+        #response = jsonify({'hello': 'world'})
         return response
 
 
@@ -46,12 +48,7 @@ class GenerateWords(Resource):
         return generated_words
 
 
-api.add_resource(GenerateWords, '/generatewords')
-
-@app.route("/app")
-def index():
-    app_name = os.getenv("APP_NAME")
-    return f"Hello world {app_name} is running"
+api.add_resource(GenerateWords, '/app')
 
 if __name__ == "__main__":
     app.run()
