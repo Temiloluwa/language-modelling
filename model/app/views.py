@@ -48,7 +48,7 @@ class GenerateWords(Resource):
 
 api.add_resource(GenerateWords, '/generatewords')
 
-@app.route("/")
+@app.route("/app")
 def index():
     app_name = os.getenv("APP_NAME")
     return f"Hello world {app_name} is running"
