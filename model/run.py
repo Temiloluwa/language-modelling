@@ -56,7 +56,7 @@ if __name__ == "__main__":
                                         padding_value=0)
         print(generated_words)
     else:
-        app.run(host='0.0.0.0')
+        app.run()
 
 
     

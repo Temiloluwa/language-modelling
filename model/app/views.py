@@ -50,7 +50,8 @@ api.add_resource(GenerateWords, '/generatewords')
 
 @app.route("/")
 def index():
-    return "Hello world"
+    app_name = os.getenv("APP_NAME")
+    return f"Hello world {app_name} is running"
 
 if __name__ == "__main__":
     app.run()

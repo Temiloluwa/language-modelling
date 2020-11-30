@@ -17,5 +17,5 @@ services:
     build: ./nginx
     container_name: nginx
     restart: always
-    expose: 
-      - 80
+    ports: 
+      - "80:80"

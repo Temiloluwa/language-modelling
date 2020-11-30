@@ -84,7 +84,7 @@ def load_model(start_string, ckpt_path):
     model = many_to_one_model(VOCAB_SIZE, SEQ_LEN, EMBED_DIMS, LSTM_DIMS, dense_dims=VOCAB_SIZE)
     model.load_weights(tf.train.latest_checkpoint(ckpt_path))
     model.build(tf.constant(1, None, SEQ_LEN))
-    return model
+    return model, tokenizer
 
 
 project_root = os.path.dirname(os.path.realpath(__file__))

@@ -5,4 +5,4 @@ Flask-RESTful==0.3.8
 Keras-Preprocessing==1.1.2
 numpy==1.19.4
 tensorflow==2.2.0
-uWSGI==2.0.18
+uwsgi==2.0.18
